@@ -1,14 +1,26 @@
 package org.yaz4j;
 
-import static org.junit.Assert.*;
-
-import org.junit.After;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.yaz4j.exception.ZoomException;
 
-public class QueryTest {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
+public class QueryTest {
+  
+  /**
+   * YAZ library is loaded by Connection, but this test class never creates a connection object, so we must load the library explicitly
+   *
+   * @throws Exception if the loading failed
+   */
+  @BeforeClass
+  public static void setUp() throws Exception {
+    // on Linux   'yaz4j' maps to 'libyaz4j.so' (i.e. 'lib' prefix & '.so'  extension)
+    // on Windows 'yaz4j' maps to 'yaz4j.dll'   (i.e.                '.dll' extension)
+    LoadLib.load("yaz4j");
+  }
+  
   @Test
   public void PrefixQueryNull() throws ZoomException {
     String msg = null;
